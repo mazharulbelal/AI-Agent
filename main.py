@@ -27,7 +27,7 @@ if __name__ == "__main__":
     while True:
         print("\n----------------------------")
         command = transcribe_voice()
-        if command.lower() in ["quit", "exit", "q"]:
+        if command.lower() in ["stop", "exit", "q"]:
             break
         docs = retriever.invoke(question=command)  # Correctly passing the command
         response = chain.invoke({ "context": docs, "question": command })
