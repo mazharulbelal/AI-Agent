@@ -33,6 +33,14 @@ It uses `llama3.2` for intelligent response generation and a **local vector stor
 
 ---
 
+
+### ▶️ Start the Environment
+
+```bash
+python env.py
+```
+
+
 ### ▶️ Start the Server
 
 ```bash

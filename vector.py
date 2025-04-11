@@ -1,5 +1,4 @@
 # vector.py
-
 class Retriever:
     def invoke(self, question: str):
         # Simulate retrieving documents based on the question
