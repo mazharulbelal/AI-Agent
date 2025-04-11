@@ -2,15 +2,18 @@
 
 ### 🧑‍💻 Created by
 **Md Mazharul Islam**  
-🌐 http://mazharulbelal.github.io
+🌐 [Portfolio Website](http://mazharulbelal.github.io)
 
 ---
+
 ### 🧠 What It Does
-This is a smart assistant that listens to your **voice** and helps with **money-related tasks** — like sending money, checking your balance, or making reports. It uses `llama3.2` for answering and a local database (vector store) to understand your past info better.
+This is a smart **AI-powered finance assistant** that listens to your **voice commands** and helps you with various **financial tasks**, such as sending money, checking your balance, and generating reports.
+
+It uses `llama3.2` for intelligent response generation and a **local vector store** database to remember and use your past financial data.
 
 ---
 
-### ⚙️ Setup (Step-by-step)
+### ⚙️ Setup Instructions
 
 1. **Create a virtual environment:**
    ```bash
@@ -21,7 +24,12 @@ This is a smart assistant that listens to your **voice** and helps with **money-
    ```bash
    source venv/bin/activate
    ```
--
+
+3. **Install dependencies:**
+   *(If you have a `requirements.txt` file)*
+   ```bash
+   pip install -r requirements.txt
+   ```
 
 ---
 
@@ -30,14 +38,15 @@ This is a smart assistant that listens to your **voice** and helps with **money-
 ```bash
 python main.py
 ```
-Once it starts, just **speak your command** into the mic.
+
+Once the server is running, you can **speak directly into your microphone** to start using the assistant.
 
 ---
 
-### 🖙️ What You Can Say
-Here are some **simple voice commands** you can try:
+### 🎙️ Voice Commands You Can Try
+Here are some useful commands the assistant understands:
 
-- "Send money"
+- "Send 100 to account"
 - "Transfer 200 to savings"
 - "Check my balance"
 - "Show spending history"
@@ -48,10 +57,24 @@ Here are some **simple voice commands** you can try:
 - "Apply for a loan"
 - "Show my credit score"
 
-For more actions and phrases, **check the `actions.py` file**.
+🔍 For more actions and custom phrases, check the `actions.py` file.
 
 ---
-### 💡 Tips
-- Make sure your **microphone** is connected.
-- Keep your commands **short and clear** for best results.
 
+### 🔮 Future Plans
+
+1. Design a web interface with a voice input button.
+2. Add temporary OTP verification for user authentication.
+3. Develop an iOS app to allow voice input directly from the device.
+4. Notify users via email and push notification when a session starts or ends.
+5. Send SMS/notifications when a financial transaction is completed.
+
+---
+
+### 💡 Tips for Best Experience
+
+- Ensure your **microphone is properly connected**.
+- Keep your voice commands **short and clear**.
+- Use a quiet environment for more accurate voice detection.
+
+---

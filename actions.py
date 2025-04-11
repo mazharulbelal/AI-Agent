@@ -1,40 +1,57 @@
 import requests
+import re
+
+def extract_amount_and_target(text):
+    amount_match = re.search(r"\b\d+(\.\d+)?\b", text)
+    target_match = re.search(r"to\s+(\w+)", text)
+    amount = float(amount_match.group()) if amount_match else 0
+    target = target_match.group(1) if target_match else "default"
+    return amount, target
 
 def execute_action(response):
     text = response.lower()
 
-    if any(kw in text for kw in ["transfer", "send money", "move funds", "pay"]):
-        print("💸 Simulating fund transfer...")
-        # Replace with your actual endpoint and payload
-        requests.post("http://localhost:8000/api/transfer", json={"amount": 500, "to": "savings"})
+    if any(kw in text for kw in ["hello", "hi", "hey"]):
+        print("🤖 Hello! How can I help you, Mazharul?")
 
-    elif any(kw in text for kw in ["report", "financial summary", "show summary"]):
-        print("📊 Generating financial report...")
-        requests.get("http://localhost:8000/api/report")
+    elif "send" in text or "transfer" in text:
+        amount, target = extract_amount_and_target(text)
+        print(f"💸 Transferring ${amount} to {target}...")
+        requests.post("http://localhost:8000/api/transfer", json={"amount": amount, "to": target})
 
-    elif any(kw in text for kw in ["balance", "how much money", "check money", "funds available"]):
-        print("💰 Checking your current balance...")
+    elif "check" in text and "balance" in text or "my balance" in text:
+        print("💰 Checking your balance...")
         requests.get("http://localhost:8000/api/balance")
 
-    elif any(kw in text for kw in ["withdraw", "cash out", "take out money"]):
-        print("💵 Processing withdrawal request...")
-        requests.post("http://localhost:8000/api/withdraw", json={"amount": 100})
+    elif "report" in text or "spending history" in text or "financial summary" in text:
+        print("📊 Generating your financial report...")
+        requests.get("http://localhost:8000/api/report")
 
-    elif any(kw in text for kw in ["deposit", "add funds", "put money"]):
-        print("💵 Processing deposit request...")
-        requests.post("http://localhost:8000/api/deposit", json={"amount": 300})
+    elif "budget" in text:
+        print("📈 Budgeting feature coming soon...")
 
-    elif any(kw in text for kw in ["loan", "borrow", "apply for loan"]):
-        print("💳 Processing loan request...")
-        requests.post("http://localhost:8000/api/loan", json={"amount": 1000})
+    elif "withdraw" in text:
+        amount, _ = extract_amount_and_target(text)
+        print(f"💵 Withdrawing ${amount}...")
+        requests.post("http://localhost:8000/api/withdraw", json={"amount": amount})
 
-    elif any(kw in text for kw in ["credit score", "my score", "credit rating"]):
-        print("🔍 Retrieving your credit score...")
+    elif "deposit" in text:
+        amount, _ = extract_amount_and_target(text)
+        print(f"💵 Depositing ${amount}...")
+        requests.post("http://localhost:8000/api/deposit", json={"amount": amount})
+
+    elif "loan" in text or "apply for loan" in text:
+        amount, _ = extract_amount_and_target(text)
+        print(f"💳 Applying for a loan of ${amount}...")
+        requests.post("http://localhost:8000/api/loan", json={"amount": amount})
+
+    elif "credit score" in text:
+        print("🔍 Checking your credit score...")
         requests.get("http://localhost:8000/api/credit_score")
 
     elif any(kw in text for kw in ["exit", "quit", "stop", "bye"]):
-        print("👋 Exiting the assistant. Have a great day!")
+        print("👋 Exiting. Have a great day, Mazharul!")
         exit()
 
     else:
-        print("⚙️ No recognizable action. Awaiting clarification.")
+        print("🤔 I didn’t understand that. Can you repeat it differently?")
