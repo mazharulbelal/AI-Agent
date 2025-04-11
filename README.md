@@ -44,7 +44,7 @@ python env.py
 ### ▶️ Start the Server
 
 ```bash
-python main.py
+python server.py
 ```
 
 Once the server is running, you can **speak directly into your microphone** to start using the assistant.
@@ -84,5 +84,4 @@ Here are some useful commands the assistant understands:
 - Ensure your **microphone is properly connected**.
 - Keep your voice commands **short and clear**.
 - Use a quiet environment for more accurate voice detection.
-
 ---
