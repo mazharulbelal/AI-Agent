@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AI Finance Agent</title>
+  <style>
+    /* Global Styles for Dark Mode */
+    body {
+      background-color: #121212;
+      color: #f4f4f4;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: row;
+      overflow: hidden;
+    }
+
+    /* Sidebar Styles */
+    .sidebar {
+      width: 300px;
+      background-color: #1e1e1e;
+      padding: 20px;
+      border-right: 2px solid #333;
+    }
+
+    .sidebar h3 {
+      color: #ffcc00;
+      font-size: 20px;
+      margin-bottom: 15px;
+    }
+
+    .sidebar ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .sidebar li {
+      margin-bottom: 12px;
+      font-size: 16px;
+      color: #cccccc;
+    }
+
+    /* Container Styles */
+    .container {
+      flex: 1;
+      text-align: center;
+      padding: 20px;
+      animation: fadeIn 2s ease-out;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    h1 {
+      font-size: 36px;
+      color: #ffffff;
+      font-weight: 700;
+      margin-bottom: 20px;
+      text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
+      animation: slideIn 1s ease-out;
+    }
+
+    h2 {
+      font-size: 20px;
+      color: #bbbbbb;
+      margin-bottom: 40px;
+      animation: slideIn 1s ease-out 0.5s;
+    }
+
+    /* Speak Button Styling */
+    button.speak-button {
+      width: 120px;
+      height: 120px;
+      background: linear-gradient(45deg, #6a1b9a, #d81b60);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      font-size: 36px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      outline: none;
+      transition: all 0.3s ease-in-out;
+      animation: popIn 1s ease-out;
+    }
+
+    button.speak-button:hover {
+      transform: scale(1.1);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+      background: linear-gradient(45deg, #9c27b0, #ff4081);
+    }
+
+    button.speak-button:active {
+      transform: scale(1.05);
+      background: linear-gradient(45deg, #8e24aa, #f50057);
+    }
+
+    /* Server Status */
+    .server-status {
+      margin-top: 20px;
+      font-size: 18px;
+    }
+
+    /* Listening Indicator */
+    #loadingIndicator {
+      display: none;
+      margin-top: 20px;
+      font-size: 24px;
+      color: #ffcc00;
+      font-weight: 600;
+      animation: fadeIn 1s ease-out;
+    }
+
+    /* Response Area Styling */
+    #response {
+      margin-top: 40px;
+      font-size: 20px;
+      color: #00e676;
+      animation: fadeIn 1.5s ease-out;
+      text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.4);
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      0% {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes slideIn {
+      0% {
+        opacity: 0;
+        transform: translateY(-50px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes popIn {
+      0% {
+        opacity: 0;
+        transform: scale(0.5);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Left Sidebar Tutorial -->
+  <div class="sidebar">
+    <h3>🧠 Voice Command Examples</h3>
+    <ul class="command-list">
+      <li>👋 "Hi"</li>
+      <li>👤 "My account info"</li>
+      <li>💵 "Check my balance"</li>
+      <li>📤 "Send 100 to John"</li>
+      <li>🏦 "Deposit 200"</li>
+      <li>🧾 "Show recent transactions"</li>
+      <li>📊 "Create a budget"</li>
+      <li>🎯 "Show my savings goals"</li>
+      <li>💳 "Apply for a loan"</li>
+      <li>📈 "View investment portfolio"</li>
+      <li>💸 "Pay 70 for electricity"</li>
+      <li>💱 "Convert USD to BDT"</li>
+      <li>📋 "Get my financial report"</li>
+      <li>📉 "Show my credit score"</li>
+      <li>🏧 "Withdraw 50"</li>
+      <li>🆘 "Help"</li>
+    </ul>
+  </div>
+
+  <!-- Main Content -->
+  <div class="container">
+    <h1>🤖 AI Finance Agent</h1>
+    <h2>Press the circular button for voice input</h2>
+
+    <button onclick="startRecording()" class="speak-button" id="speakButton">🎙️</button>
+
+    <div id="serverStatus" class="server-status">Checking server...</div>
+    <div id="loadingIndicator">🎧 Listening...</div>
+    <div id="response"></div>
+  </div>
+
+  <script>
+    async function startRecording() {
+      const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+      recognition.lang = "en-US";
+      recognition.interimResults = false;
+
+      const button = document.getElementById("speakButton");
+      const loader = document.getElementById("loadingIndicator");
+
+      button.classList.add("listening");
+      loader.style.display = "block";
+
+      recognition.onresult = async function (event) {
+        const transcript = event.results[0][0].transcript;
+        document.getElementById("response").innerHTML = `<strong>You said:</strong> ${transcript}`;
+
+        try {
+          const response = await fetch("http://localhost:8000/voice-command/", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ command: transcript })
+          });
+
+          const data = await response.json();
+          document.getElementById("response").innerHTML += `<br><strong>AI Response:</strong> ${data.html}`;
+
+          const tts = new SpeechSynthesisUtterance(data.text);
+          window.speechSynthesis.speak(tts);
+        } catch (error) {
+          document.getElementById("response").innerHTML += `<br><strong>Error:</strong> ${error.message}`;
+        }
+
+        loader.style.display = "none";
+        button.classList.remove("listening");
+      };
+
+      recognition.onerror = function () {
+        loader.style.display = "none";
+        button.classList.remove("listening");
+        alert("Voice recognition error. Try again.");
+      };
+
+      recognition.start();
+    }
+
+    async function checkServerStatus() {
+      const el = document.getElementById("serverStatus");
+      try {
+        const res = await fetch("http://localhost:8000/status");
+        if (res.ok) {
+          el.innerText = "✅ Server online";
+          el.style.color = "#00e676";
+        } else throw new Error();
+      } catch {
+        el.innerText = "❌ Server offline";
+        el.style.color = "#ff1744";
+      }
+    }
+
+    window.onload = checkServerStatus;
+  </script>
+
+</body>
+</html>

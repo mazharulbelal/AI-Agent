@@ -1,5 +1,9 @@
-langchain
-langchain-community
+fastapi
+uvicorn
 speechrecognition
-pyaudio
+gtts
+sounddevice
+numpy
 ollama
+requests
+python-multipart
