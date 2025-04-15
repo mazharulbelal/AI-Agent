@@ -11,7 +11,7 @@ An intelligent voice-powered finance assistant built with FastAPI and local AI t
 
 
 **Live Link**  
-🌐 [Link]([http://mazharulbelal.github.io](https://ai-agent-za4j.onrender.com)
+🌐 [Link](https://ai-agent-za4j.onrender.com)
 
 
 ---
