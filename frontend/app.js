@@ -15,7 +15,7 @@ async function startRecording() {
     document.getElementById("response").innerHTML = `<strong>You said:</strong> ${transcript}`;
 
     try {
-      const response = await fetch("https://ai-agent-za4j.onrender.com/voice-command/", {
+    //  const response = await fetch("https://ai-agent-za4j.onrender.com/voice-command/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ command: transcript })
